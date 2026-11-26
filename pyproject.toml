@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stack-sentinel"
+version = "0.1.0"
+description = "Low-noise health watcher for self-hosted stacks: Docker/systemd/HTTP auto-discovery, debounced alerts, heartbeat and EWMA anomaly detection"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = ["httpx>=0.27", "PyYAML>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+stack-sentinel = "stack_sentinel.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

@@ -1,0 +1,34 @@
+# Example configuration. Credentials come from environment variables:
+#   SENTINEL_WEBHOOK_URL, SENTINEL_CHAT_WEBHOOK_URL
+interval_s: 60
+fail_after: 3          # consecutive failures before alerting
+recover_after: 2       # consecutive OK results before declaring recovery
+flap_window: 10        # flapping: at least flap_changes OK/FAIL changes
+flap_changes: 6        #   within the last flap_window checks
+heartbeat_hours: 6
+
+docker:
+  enabled: true
+  socket: /var/run/docker.sock
+  ignore_clean_exit: true   # skip one-shot containers that exited with code 0
+
+systemd:
+  patterns: ["myapp-*.service", "nginx.service"]
+
+http:
+  slow_ms: 1500
+  targets:
+    api: http://127.0.0.1:8000/healthz
+    dashboard: http://127.0.0.1:3000/
+
+anomaly:
+  alpha: 0.1
+  z: 4.0
+  warmup: 20
+  cooldown_cycles: 10      # at most one anomaly event per metric per N cycles
+
+notify:
+  webhook: false
+  chat_webhook: false
+  chat_text_field: text   # field name the chat tool expects for the message
+  jsonl: events.jsonl
